@@ -1,0 +1,68 @@
+seal_model: "squidbot"
+seal_usd_path: "usd/squidbot.usd"  # Relative path to IsaacLab directory
+
+# chose to save data to csv file
+save_csv: false
+
+# Each rotor entry is a tuple (rotor_type, rotor_name(force applied body), torque applied rigid_body_name, is_ccw, Td_rotor, min_thrust[N], max_thrust[N], k_tau, k_tau_neg, Diameter(m))
+rotors:
+  - ["simple", "thrust", "thrust", true, 0.02, 0.0, 0.0, 0.0, 0.0, 0.2]
+
+# Use simple same rotors with thrust-to-weight ratio
+# If you want to use different max_thrust for each rotor, set this to false
+# If true, all rotors will have the same max_thrust, and the thrust-to-weight ratio will be used to calculate the max_thrust. It will overwrite the max_thrust[N] values in rotors list
+all_same_rotors: true # Do not use it, when rotors are not a simple rotor
+thrust_to_weight_ratio: 2.0 # Squid ~= 10g?, 0.1 sec
+
+# Use action noise
+use_action_noise: false
+action_noise_std: 0.01
+# Use observation noise
+use_observation_noise: false
+observation_noise_std: 0.01
+
+disturbances:
+  # Uneven floor generation
+  forces:
+    use_force_disturbance: False
+    use_constant_force: False
+    use_sinusoidal_force: False
+    force_const_min: 0.0 
+    force_const_max: 0.2
+    force_sin_min: 0.0
+    force_sin_max: 0.2
+    force_min_freq: 0.25
+    force_max_freq: 3.0
+    force_min_shift: 0.0
+    force_max_shift: 3.0
+
+  torques:
+    # Torque disturbance generation
+    use_torque_disturbance: False
+    use_constant_torque: False
+    use_sinusoidal_torque: False
+    torque_const_min: 0.0
+    torque_const_max: 0.05
+    torque_sin_min: 0.0
+    torque_sin_max: 0.05
+    torque_min_freq: 0.25
+    torque_max_freq: 3
+    torque_min_shift: 0.0
+    torque_max_shift: 3.0
+
+# List of None-simple(can not be configured within Isaac Sim) joints
+# [joint_name, [list of joint efforts from min state to max state]
+pro_joints: []
+#  - ["m00_m01_joint_passive", [[-1.570796, 1.0], [-0.9037158806, 1.0], [-0.8937158806, 0.9518504724], [-0.7910905206, 0.4759252362], [-0.7889961255, -0.1903700945], [-0.3942431956, 0.0], [0.0001177960769, 0.1901810818], [0.002212191179, -0.4754527044], [0.1048375512, -0.9509054088], [0.1148375512, -1.0], [1.570796, -1.0]]]
+#  - ["module_2_3_joint", [[-1.570796, 1.0], [-0.9037158806, 1.0], [-0.8937158806, 0.9518504724], [-0.7910905206, 0.4759252362], [-0.7889961255, -0.1903700945], [-0.3942431956, 0.0], [0.0001177960769, 0.1901810818], [0.002212191179, -0.4754527044], [0.1048375512, -0.9509054088], [0.1148375512, -1.0], [1.570796, -1.0]]]
+
+# active_joints: [] # List of joint names that are active
+active_joints: ["base_connect_active", "connect_thrust_active"]
+
+# joints_pos_required: [] # List of joint names requiring position
+joints_pos_required: ["base_connect_active", "connect_thrust_active"]
+
+# joints_vel_required: [] # List of joint names requiring velocity
+joints_vel_required: []
+
+joints_define_morph: ["base_connect_active", "connect_thrust_active"]

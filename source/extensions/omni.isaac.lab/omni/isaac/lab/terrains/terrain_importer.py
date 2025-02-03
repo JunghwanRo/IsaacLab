@@ -155,9 +155,7 @@ class TerrainImporter:
         # create a marker if necessary
         if debug_vis:
             if not hasattr(self, "origin_visualizer"):
-                self.origin_visualizer = VisualizationMarkers(
-                    cfg=FRAME_MARKER_CFG.replace(prim_path="/Visuals/TerrainOrigin")
-                )
+                self.origin_visualizer = VisualizationMarkers(cfg=FRAME_MARKER_CFG.replace(prim_path="/Visuals/TerrainOrigin"))
                 if self.terrain_origins is not None:
                     self.origin_visualizer.visualize(self.terrain_origins.reshape(-1, 3))
                 elif self.env_origins is not None:
@@ -261,9 +259,7 @@ class TerrainImporter:
 
         # traverse the prim and get the collision mesh
         # THINK: Should the user specify the collision mesh?
-        mesh_prim = sim_utils.get_first_matching_child_prim(
-            self.cfg.prim_path + f"/{key}", lambda prim: prim.GetTypeName() == "Mesh"
-        )
+        mesh_prim = sim_utils.get_first_matching_child_prim(self.cfg.prim_path + f"/{key}", lambda prim: prim.GetTypeName() == "Mesh")
         # check if the mesh is valid
         if mesh_prim is None:
             raise ValueError(f"Could not find any collision mesh in {usd_path}. Please check asset.")
@@ -355,9 +351,7 @@ class TerrainImporter:
         # create a grid of origins
         num_rows = np.ceil(num_envs / int(np.sqrt(num_envs)))
         num_cols = np.ceil(num_envs / num_rows)
-        ii, jj = torch.meshgrid(
-            torch.arange(num_rows, device=self.device), torch.arange(num_cols, device=self.device), indexing="ij"
-        )
+        ii, jj = torch.meshgrid(torch.arange(num_rows, device=self.device), torch.arange(num_cols, device=self.device), indexing="ij")
         env_origins[:, 0] = -(ii.flatten()[:num_envs] - (num_rows - 1) / 2) * env_spacing
         env_origins[:, 1] = (jj.flatten()[:num_envs] - (num_cols - 1) / 2) * env_spacing
         env_origins[:, 2] = 0.0

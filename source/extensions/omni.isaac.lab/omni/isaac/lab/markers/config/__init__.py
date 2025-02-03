@@ -130,3 +130,39 @@ POSITION_GOAL_MARKER_CFG = VisualizationMarkersCfg(
     }
 )
 """Configuration for the end-effector tracking marker."""
+
+##
+# Forces.
+##
+
+CONE_MARKER_CFG = VisualizationMarkersCfg(
+    markers={
+        "cone": sim_utils.ConeCfg(
+            radius=0.05,
+            height=0.1,
+            axis="Z",
+            visual_material=sim_utils.PreviewSurfaceCfg(diffuse_color=(1.0, 0.0, 0.0)),
+        ),
+    }
+)
+
+CYLINDER_MARKER_CFG = VisualizationMarkersCfg(
+    markers={
+        "cylinder": sim_utils.CylinderCfg(
+            radius=0.05,
+            height=0.1,
+            axis="Z",
+            visual_material=sim_utils.PreviewSurfaceCfg(diffuse_color=(1.0, 0.0, 0.0)),
+        ),
+    }
+)
+
+CYLINDER_MINUS_MARKER_CFG = VisualizationMarkersCfg(
+    markers={
+        "cylinder": sim_utils.UsdFileCfg(
+            usd_path=f"{ISAAC_NUCLEUS_DIR}/omniverse://localhost/Projects/SEAL/cylinder_minus_z.usd",
+            scale=(1.0, 1.0, 1.0),
+            visual_material=sim_utils.PreviewSurfaceCfg(diffuse_color=(1.0, 0.0, 0.0)),
+        )
+    }
+)
