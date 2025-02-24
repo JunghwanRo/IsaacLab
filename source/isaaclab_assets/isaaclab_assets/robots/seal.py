@@ -11,13 +11,13 @@ import os
 import pathlib
 import yaml
 
-import omni.isaac.lab.sim as sim_utils
-from omni.isaac.lab.actuators import ImplicitActuatorCfg
-from omni.isaac.lab.assets import ArticulationCfg
-from omni.isaac.lab.utils.assets import ISAACLAB_NUCLEUS_DIR
+import isaaclab.sim as sim_utils
+from isaaclab.actuators import ImplicitActuatorCfg
+from isaaclab.assets import ArticulationCfg
+from isaaclab.utils.assets import ISAACLAB_NUCLEUS_DIR
 
 # Determine the IsaacLab directory
-ISAACLAB_DIR = pathlib.Path(__file__).parents[6]
+ISAACLAB_DIR = pathlib.Path(__file__).parents[4]
 
 
 # Function to read YAML configuration
@@ -28,7 +28,7 @@ def read_config(yaml_path: str) -> dict:
 
 
 # Read the configuration
-config_path = os.path.join(ISAACLAB_DIR, "source/extensions/omni.isaac.lab_tasks/omni/isaac/lab_tasks/direct/seal/seal_cfg.yaml")
+config_path = os.path.join(ISAACLAB_DIR, "source/isaaclab_tasks/isaaclab_tasks/direct/seal/seal_cfg.yaml")
 config = read_config(config_path)
 
 # Extract the model and usd_path from the configuration

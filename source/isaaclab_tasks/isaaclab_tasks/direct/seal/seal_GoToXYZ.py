@@ -10,7 +10,7 @@ import math
 
 from .seal_core import SealEnv, SealEnvCfg
 
-from omni.isaac.lab.utils.math import subtract_frame_transforms, quat_from_matrix, normalize, quat_from_euler_xyz
+from isaaclab.utils.math import subtract_frame_transforms, quat_from_matrix, normalize, quat_from_euler_xyz
 
 
 @torch.jit.script

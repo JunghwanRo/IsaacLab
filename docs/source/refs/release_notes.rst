@@ -171,17 +171,17 @@ Renaming of Isaac Lab Extensions and Folders
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Corresponding to Isaac Sim 4.5 changes, we have also made some updates to the Isaac Lab directories and extensions.
-All extensions that were previously under ``source/extensions`` are now under the ``source/`` directory directly.
-The ``source/apps`` and ``source/standalone`` folders have been moved to the root directory and are now called
+All extensions that were previously under ``source`` are now under the ``source/`` directory directly.
+The ``apps`` and ``scripts`` folders have been moved to the root directory and are now called
 ``apps/`` and ``scripts/``.
 
 Isaac Lab extensions have been renamed to:
 
-* ``omni.isaac.lab`` --> ``isaaclab``
-* ``omni.isaac.lab_assets`` --> ``isaaclab_assets``
-* ``omni.isaac.lab_tasks`` --> ``isaaclab_tasks``
+* ``isaaclab`` --> ``isaaclab``
+* ``isaaclab_assets`` --> ``isaaclab_assets``
+* ``isaaclab_tasks`` --> ``isaaclab_tasks``
 
-In addition, we have split up the previous ``source/standalone/workflows`` directory into ``scripts/imitation_learning``
+In addition, we have split up the previous ``scripts/workflows`` directory into ``scripts/imitation_learning``
 and ``scripts/reinforcement_learning`` directories. The RSL RL, Stable-Baselines, RL_Games, SKRL, and Ray directories
 are under ``scripts/reinforcement_learning``, while Robomimic and the new Isaac Lab Mimic directories are under
 ``scripts/imitation_learning``.
@@ -204,7 +204,7 @@ who prefer to use the previous scripts, they will be available in previous relea
 
 Additionally, we have also restructured the ``isaaclab_assets`` extension to be split into ``robots`` and ``sensors``
 subdirectories. This allows for clearer separation between the pre-defined configurations provided in the extension.
-For any existing imports such as ``from omni.isaac.lab_assets.anymal import ANYMAL_C_CFG``, please replace it with
+For any existing imports such as ``from isaaclab_assets.anymal import ANYMAL_C_CFG``, please replace it with
 ``from isaaclab.robots.anymal import ANYMAL_C_CFG``.
 
 
@@ -316,7 +316,7 @@ Improvements
 * Inverts SE-2 keyboard device actions (Z, X)  for yaw command by @riccardorancan in https://github.com/isaac-sim/IsaacLab/pull/1030
 * Disables backward pass compilation of warp kernels by @Mayankm96 in https://github.com/isaac-sim/IsaacLab/pull/1222
 * Replaces TensorDict with native dictionary by @Toni-SM in https://github.com/isaac-sim/IsaacLab/pull/1348
-* Improves omni.isaac.lab_tasks loading time by @Toni-SM in https://github.com/isaac-sim/IsaacLab/pull/1353
+* Improves isaaclab_tasks loading time by @Toni-SM in https://github.com/isaac-sim/IsaacLab/pull/1353
 * Caches PhysX view's joint paths when processing fixed articulation tendons by @Toni-SM in https://github.com/isaac-sim/IsaacLab/pull/1347
 * Replaces hardcoded module paths with ``__name__`` dunder by @Mayankm96 in https://github.com/isaac-sim/IsaacLab/pull/1357
 * Expands observation term scaling to support list of floats by @pascal-roth in https://github.com/isaac-sim/IsaacLab/pull/1269
@@ -330,7 +330,7 @@ Improvements
 * Adds versioning to the docs by @sheikh-nv in https://github.com/isaac-sim/IsaacLab/pull/1247
 * Adds better error message for invalid actuator parameters by @lgulich in https://github.com/isaac-sim/IsaacLab/pull/1235
 * Updates tested docker and apptainer versions for cluster deployment by @pascal-roth in https://github.com/isaac-sim/IsaacLab/pull/1230
-* Removes ``ml_archive`` as a dependency of ``omni.isaac.lab`` extension by @fan-ziqi in https://github.com/isaac-sim/IsaacLab/pull/1266
+* Removes ``ml_archive`` as a dependency of ``isaaclab`` extension by @fan-ziqi in https://github.com/isaac-sim/IsaacLab/pull/1266
 * Adds a validity check for configclasses by @Dhoeller19 in https://github.com/isaac-sim/IsaacLab/pull/1214
 * Ensures mesh name is compatible with USD convention in mesh converter by @fan-ziqi in https://github.com/isaac-sim/IsaacLab/pull/1302
 * Adds sanity check for the term type inside the command manager by @command-z-z in https://github.com/isaac-sim/IsaacLab/pull/1315
@@ -493,13 +493,13 @@ Before:
 
 .. code:: bash
 
-    ./isaaclab.sh -p source/standalone/workflows/sb3/train.py --task Isaac-Cartpole-v0 --headless --cpu
+    ./isaaclab.sh -p scripts/workflows/sb3/train.py --task Isaac-Cartpole-v0 --headless --cpu
 
 Now:
 
 .. code:: bash
 
-    ./isaaclab.sh -p source/standalone/workflows/sb3/train.py --task Isaac-Cartpole-v0 --headless --device cpu
+    ./isaaclab.sh -p scripts/workflows/sb3/train.py --task Isaac-Cartpole-v0 --headless --device cpu
 
 Renaming of teleoperation device CLI in standalone scripts
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -510,13 +510,13 @@ Before:
 
 .. code:: bash
 
-    ./isaaclab.sh -p source/standalone/environments/teleoperation/teleop_se3_agent.py --task Isaac-Lift-Cube-Franka-IK-Rel-v0 --num_envs 1 --device keyboard
+    ./isaaclab.sh -p scripts/environments/teleoperation/teleop_se3_agent.py --task Isaac-Lift-Cube-Franka-IK-Rel-v0 --num_envs 1 --device keyboard
 
 Now:
 
 .. code:: bash
 
-    ./isaaclab.sh -p source/standalone/environments/teleoperation/teleop_se3_agent.py --task Isaac-Lift-Cube-Franka-IK-Rel-v0 --num_envs 1 --teleop_device keyboard
+    ./isaaclab.sh -p scripts/environments/teleoperation/teleop_se3_agent.py --task Isaac-Lift-Cube-Franka-IK-Rel-v0 --num_envs 1 --teleop_device keyboard
 
 
 Using Python-version of container utility script
@@ -626,7 +626,7 @@ Migration Guide
 Renaming of ``SimulationCfg.substeps``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Previously, the users set both ``omni.isaac.lab.sim.SimulationCfg.dt`` and ``omni.isaac.lab.sim.SimulationCfg.substeps``, which marked the physics insulation time-step and sub-steps, respectively. It was unclear whether sub-steps meant the number of integration steps inside the physics time-step ``dt`` or the number of physics steps inside a rendering step.
+Previously, the users set both ``isaaclab.sim.SimulationCfg.dt`` and ``isaaclab.sim.SimulationCfg.substeps``, which marked the physics insulation time-step and sub-steps, respectively. It was unclear whether sub-steps meant the number of integration steps inside the physics time-step ``dt`` or the number of physics steps inside a rendering step.
 
 Since in the code base, the attribute was used as the latter, it has been renamed to ``render_interval`` for clarity.
 
@@ -637,11 +637,11 @@ As notified in previous releases, we removed the classes and attributes marked a
 
 * The ``mdp.add_body_mass`` method in the events. Please use the ``mdp.randomize_rigid_body_mass`` instead.
 * The classes ``managers.RandomizationManager`` and ``managers.RandomizationTermCfg``. Please use the ``managers.EventManager`` and ``managers.EventTermCfg`` classes instead.
-* The following properties in ``omni.isaac.lab.sensors.FrameTransformerData``:
+* The following properties in ``isaaclab.sensors.FrameTransformerData``:
    * ``target_rot_source`` --> ``target_quat_w``
    * ``target_rot_w`` --> ``target_quat_source``
    * ``source_rot_w`` --> ``source_quat_w``
-* The attribute ``body_physx_view`` from the ``omni.isaac.lab.assets.Articulation`` and ``omni.isaac.lab.assets.RigidObject`` classes. These caused confusion when used with the articulation view since the body names did not follow the same ordering.
+* The attribute ``body_physx_view`` from the ``isaaclab.assets.Articulation`` and ``isaaclab.assets.RigidObject`` classes. These caused confusion when used with the articulation view since the body names did not follow the same ordering.
 
 New Contributors
 ----------------

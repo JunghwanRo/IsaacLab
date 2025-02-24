@@ -7,43 +7,42 @@ from __future__ import annotations
 
 import warp as wp
 import gymnasium as gym
-import numpy as np
 import torch
 import os
 import yaml
 import pathlib
 import csv
 from datetime import datetime
-from omni.isaac.lab.utils.noise import GaussianNoiseCfg, NoiseModelWithAdditiveBiasCfg
+from isaaclab.utils.noise import GaussianNoiseCfg, NoiseModelWithAdditiveBiasCfg
 
-import omni.isaac.lab.envs.mdp as mdp
-import omni.isaac.lab.sim as sim_utils
-from omni.isaac.lab.assets import Articulation, ArticulationCfg
-from omni.isaac.lab.envs import DirectRLEnv, DirectRLEnvCfg
-from omni.isaac.lab.envs.ui import BaseEnvWindow
-from omni.isaac.lab.sensors import ContactSensor, RayCaster
-from omni.isaac.lab.managers import EventTermCfg as EventTerm
-from omni.isaac.lab.managers import SceneEntityCfg
-from omni.isaac.lab.scene import InteractiveSceneCfg
-from omni.isaac.lab.sensors import ContactSensorCfg, RayCasterCfg, patterns
-from omni.isaac.lab.sim import SimulationCfg, SimulationContext
-from omni.isaac.lab.terrains import TerrainImporterCfg
+import isaaclab.envs.mdp as mdp
+import isaaclab.sim as sim_utils
+from isaaclab.assets import Articulation, ArticulationCfg
+from isaaclab.envs import DirectRLEnv, DirectRLEnvCfg
+from isaaclab.envs.ui import BaseEnvWindow
+from isaaclab.sensors import ContactSensor, RayCaster
+from isaaclab.managers import EventTermCfg as EventTerm
+from isaaclab.managers import SceneEntityCfg
+from isaaclab.scene import InteractiveSceneCfg
+from isaaclab.sensors import ContactSensorCfg, RayCasterCfg, patterns
+from isaaclab.sim import SimulationCfg, SimulationContext
+from isaaclab.terrains import TerrainImporterCfg
 
-from omni.isaac.lab.utils import configclass
-from omni.isaac.lab.utils.math import subtract_frame_transforms
-from omni.isaac.lab.markers import VisualizationMarkers, VisualizationMarkersCfg
-from omni.isaac.lab_tasks.direct.seal.dynamics.rotordynamics import create_rotor
-from omni.isaac.lab_tasks.direct.seal.dynamics.jointdynamics import create_joint
-from omni.isaac.lab.markers import CUBOID_MARKER_CFG, CYLINDER_MINUS_MARKER_CFG
-from omni.isaac.lab.utils.assets import ISAAC_NUCLEUS_DIR
+from isaaclab.utils import configclass
+from isaaclab.utils.math import subtract_frame_transforms
+from isaaclab.markers import VisualizationMarkers, VisualizationMarkersCfg
+from isaaclab_tasks.direct.seal.dynamics.rotordynamics import create_rotor
+from isaaclab_tasks.direct.seal.dynamics.jointdynamics import create_joint
+from isaaclab.markers import CUBOID_MARKER_CFG, CYLINDER_MINUS_MARKER_CFG
+from isaaclab.utils.assets import ISAAC_NUCLEUS_DIR
 
-from omni.isaac.lab_tasks.direct.seal.robots.squidbot import SquidbotRobot
-from omni.isaac.lab_tasks.direct.seal.robots_cfg.squidbot_cfg import SquidbotRobotCfg
+from isaaclab_tasks.direct.seal.robots.squidbot import SquidbotRobot
+from isaaclab_tasks.direct.seal.robots_cfg.squidbot_cfg import SquidbotRobotCfg
 
 ##
 # Pre-defined configs
 ##
-from omni.isaac.lab_assets.seal import SEAL_CFG  # isort: skip
+from isaaclab_assets.robots.seal import SEAL_CFG  # isort: skip
 
 
 # Determine the IsaacLab directory
@@ -92,7 +91,7 @@ class SealEnvCfg(DirectRLEnvCfg):
     # parameters from yaml
     ####################################################################################################
     # Read the configuration
-    config_path = os.path.join(ISAACLAB_DIR, "source/extensions/omni.isaac.lab_tasks/omni/isaac/lab_tasks/direct/seal/seal_cfg.yaml")
+    config_path = os.path.join(ISAACLAB_DIR, "source/isaaclab_tasks/isaaclab_tasks/direct/seal/seal_cfg.yaml")
     config = read_config(config_path)
 
     robot_cfg: SquidbotRobotCfg = SquidbotRobotCfg()
@@ -143,20 +142,8 @@ class SealEnvCfg(DirectRLEnvCfg):
     episode_length_s = 50.0
     decimation = 2  # change when changing the dt
     action_scale = 0.5
-    # -----------------------------
-    # IMPORTANT: Use a dictionary with one discrete dimension and one continuous dimension
-    # -----------------------------
-    # Example discrete dimension: 3 => {0: NOTHING, 1: JETTING, 2: CHARGING}
-    # Example continuous dimension: remainder for rotors + joints
-    # Define the action_apce, one with set (3 elements) and len(active_joints)
-    action_space = gym.spaces.Box(
-        low=-1.0,
-        high=1.0,
-        shape=(3 + len(active_joints),),
-        dtype=np.float32,
-    )
-    # -----------------------------
-    observation_space_robot = 9 + len(joints_pos_required) + len(joints_vel_required) + 4  # TODO: change hardcoded observation space numbers
+    action_space = len(rotors) + len(active_joints)
+    observation_space_robot = 9 + len(joints_pos_required) + len(joints_vel_required) + action_space
     observation_space_task: int = 3  # default 3, will be updated in the env
     observation_space = observation_space_robot + observation_space_task
     state_space = 0
@@ -218,14 +205,9 @@ class SealEnv(DirectRLEnv):
 
         self.robot_api.run_setup(self._robot)
 
-        # Instead of storing one big _actions tensor, we store separate buffers
-        # for the discrete command and for the continuous motor command:
-        self._discrete_cmd = torch.zeros(self.num_envs, dtype=torch.long, device=self.device)
-        self._continuous_cmd = torch.zeros(self.num_envs, len(self.cfg.active_joints), device=self.device)
-        # Similarly, store previous actions for logging
-        self._prev_discrete_cmd = torch.zeros_like(self._discrete_cmd)
-        self._prev_continuous_cmd = torch.zeros_like(self._continuous_cmd)
-
+        # Total thrust and moment applied to the base of the seal
+        self._actions = torch.zeros(self.num_envs, gym.spaces.flatdim(self.single_action_space), device=self.device)
+        self._previous_actions = torch.zeros(self.num_envs, gym.spaces.flatdim(self.single_action_space), device=self.device)
         self._vec_joints = torch.zeros(self.num_envs, len(self.cfg.active_joints), device=self.device)
         self._temp_joint_targets = torch.zeros(self.num_envs, len(self.cfg.active_joints), device=self.device)
         self._joint_targets = torch.zeros(self.num_envs, len(self.cfg.active_joints), device=self.device)
@@ -351,18 +333,7 @@ class SealEnv(DirectRLEnv):
         light_cfg.func("/World/Light", light_cfg)
 
     def _pre_physics_step(self, actions: torch.Tensor):
-        # print(f"actions: {actions}")
-        discrete_cmd_one_hot = actions[:, :3].to(self.device)  # 0: NOTHING, 1: JETTING, 2: CHARGING
-        continuous_cmd = actions[:, 3:].to(self.device)
-
-        # Store them
-        # convert discrete_cmd one hot coding into normal integer
-        self._discrete_cmd[:] = discrete_cmd_one_hot.argmax(dim=1).long()
-        # print(f"discrete_cmd: {self._discrete_cmd}")
-        # print(f"dimension of actions: {actions.shape}")
-        # print(f"dimension of self._continuous_cmd: {self._continuous_cmd.shape}")
-        # print(f"dimension of continuous_cmd: {continuous_cmd.shape}")
-        self._continuous_cmd[:] = continuous_cmd.clamp(-1.0, 1.0)
+        self._actions = actions.clone().clamp(-1.0, 1.0)
         # print(f"self._actions: {self._actions}")
         # self._thrust[:, 0, 2] = self.cfg.thrust_to_weight * self._robot_weight * (self._actions[:, 0] + 1.0) / 2.0
         # self._moment[:, 0, :] = self.cfg.moment_scale * self._actions[:, 1:]
@@ -370,26 +341,13 @@ class SealEnv(DirectRLEnv):
 
         # debug: all action -1. Carefully think what action -1, 0, 1 means.
         # self._actions = torch.zeros_like(self._actions).uniform_(-1.0, -1.0)
-        self._full_actions = torch.ones_like(self._discrete_cmd[:]).float()
-        # print(f"floated discrete_cmd: {self._discrete_cmd[:].float()}")
 
         for idx, rotor in enumerate(self.rotors):
             self._thrusts[:, self.rotor_body_ids[idx], 2], self._moments[:, self.rotorhub_body_ids[idx], 2] = rotor.get_thrust_and_torque(
-                self._full_actions[:]
-            )
-            # Keep thrusts only where self._discrete_cmd is 1
-            self._thrusts[:, self.rotor_body_ids[idx], 2] = torch.where(
-                self._discrete_cmd == 1,
-                self._thrusts[:, self.rotor_body_ids[idx], 2],
-                torch.zeros_like(self._thrusts[:, self.rotor_body_ids[idx], 2]),
+                self._actions[:, idx]
             )
             if self.cfg.save_csv and self.num_envs <= 1:
                 self.thrust_log[:, idx] = self._thrusts[:, self.rotor_body_ids[idx], 2]
-        mask = self._discrete_cmd == 1
-        # Expand mask to match (num_envs, num_bodies, 3) so broadcasting works properly
-        mask_3d = mask.view(-1, 1, 1).expand(-1, self._thrusts.shape[1], self._thrusts.shape[2])
-        self._thrusts = torch.where(mask_3d, self._thrusts, torch.zeros_like(self._thrusts))
-        self._moments = torch.where(mask_3d, self._moments, torch.zeros_like(self._moments))
         num_rotors = len(self.cfg.rotors)
         # Make thrust to 0.0 if the rotor’s world z-position is above 0.0
         # But note that actually the thrust works in the air as well.
@@ -407,7 +365,7 @@ class SealEnv(DirectRLEnv):
 
         # Handle joint actions if there are any active joints
         if len(self.active_joints) > 0:
-            joint_actions = self._continuous_cmd
+            joint_actions = self._actions[:, num_rotors:]
             # Check if we have active_joints
             for idx, (joint_id, joint_name, lower_limit, upper_limit) in enumerate(self.active_joints):
                 # Map action from [-1, 1] to [lower_limit, upper_limit]
@@ -462,8 +420,7 @@ class SealEnv(DirectRLEnv):
                 joint_pos_obs,
                 joint_vel_obs,
                 desired_pos_b,
-                self._prev_discrete_cmd,
-                self._prev_continuous_cmd,
+                self._previous_actions,
             ],
             dim=-1,
         )
@@ -477,8 +434,7 @@ class SealEnv(DirectRLEnv):
                 "joint_pos_obs": joint_pos_obs,
                 "joint_vel_obs": joint_vel_obs,
                 "desired_pos_b": desired_pos_b,
-                "prev_discrete_cmd": self._prev_discrete_cmd,
-                "prev_continuous_cmd": self._prev_continuous_cmd,
+                "previous_actions": self._previous_actions,
             }
 
         return observations
@@ -489,8 +445,7 @@ class SealEnv(DirectRLEnv):
         distance_to_goal = torch.linalg.norm(self._desired_pos_w - self._robot.data.root_pos_w, dim=1)
         distance_to_goal_mapped = 1 - torch.tanh(distance_to_goal / 0.8)
 
-        self._prev_discrete_cmd = self._discrete_cmd.clone()
-        self._prev_continuous_cmd = self._continuous_cmd.clone()
+        self._previous_actions = self._actions.clone()
 
         rewards = {
             "lin_vel": lin_vel * self.cfg.lin_vel_reward_scale * self.step_dt,
@@ -516,8 +471,8 @@ class SealEnv(DirectRLEnv):
         if len(env_ids) == self.num_envs:
             # Spread out the resets to avoid spikes in training when many environments reset at a similar time
             self.episode_length_buf[:] = torch.randint_like(self.episode_length_buf, high=int(self.max_episode_length))
-        self._continuous_cmd[env_ids] = 0.0
-        self._prev_continuous_cmd[env_ids] = 0.0
+        self._actions[env_ids] = 0.0
+        self._previous_actions[env_ids] = 0.0
         # Reset robot state
         joint_pos = self._robot.data.default_joint_pos[env_ids]
         joint_vel = self._robot.data.default_joint_vel[env_ids]
@@ -594,8 +549,7 @@ class SealEnv(DirectRLEnv):
                 "root_quat_w",
                 "root_lin_vel_w",
                 "root_ang_vel_w",
-                "discrete actions",
-                "continuous actions",
+                "actions",
                 "thrusts",
                 "joint_targets",
                 "body_com_state_w",
@@ -620,8 +574,7 @@ class SealEnv(DirectRLEnv):
             self._robot.data.root_quat_w[0].tolist(),
             self._robot.data.root_lin_vel_w[0].tolist(),
             self._robot.data.root_ang_vel_w[0].tolist(),
-            self._discrete_cmd[0].tolist(),
-            self._continuous_cmd[0].tolist(),
+            self._actions[0].tolist(),
             thrust_log_list,
             self._joint_targets[0].tolist(),
             self._robot.data.body_com_state_w[0].tolist(),

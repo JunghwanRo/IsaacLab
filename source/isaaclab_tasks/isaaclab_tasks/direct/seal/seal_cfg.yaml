@@ -1,8 +1,19 @@
+# Task Description. It was for checking the save_file function.
+
 seal_model: "squidbot"
 seal_usd_path: "usd/squidbot.usd"  # Relative path to IsaacLab directory
+save_files:
+  - "usd/squidbot.usd"
+  - "source/isaaclab_tasks/isaaclab_tasks/direct/seal/seal_core.py"
+  - "source/isaaclab_tasks/isaaclab_tasks/direct/seal/seal_cfg.yaml"
+  - "source/isaaclab_tasks/isaaclab_tasks/direct/seal/seal_Migration.py"
+  - "source/isaaclab_tasks/isaaclab_tasks/direct/seal/robots/robot_core.py"
+  - "source/isaaclab_tasks/isaaclab_tasks/direct/seal/robots/squidbot.py"
+  - "source/isaaclab_tasks/isaaclab_tasks/direct/seal/robots_cfg/robot_core_cfg.py"
+  - "source/isaaclab_tasks/isaaclab_tasks/direct/seal/robots_cfg/squidbot_cfg.py"
 
 # chose to save data to csv file
-save_csv: false
+save_csv: true
 
 # Each rotor entry is a tuple (rotor_type, rotor_name(force applied body), torque applied rigid_body_name, is_ccw, Td_rotor, min_thrust[N], max_thrust[N], k_tau, k_tau_neg, Diameter(m))
 rotors:
@@ -12,7 +23,7 @@ rotors:
 # If you want to use different max_thrust for each rotor, set this to false
 # If true, all rotors will have the same max_thrust, and the thrust-to-weight ratio will be used to calculate the max_thrust. It will overwrite the max_thrust[N] values in rotors list
 all_same_rotors: true # Do not use it, when rotors are not a simple rotor
-thrust_to_weight_ratio: 2.0 # Squid ~= 10g?, 0.1 sec
+thrust_to_weight_ratio: 2.5 # Squid ~= 3g?, 0.1 sec
 
 # Use action noise
 use_action_noise: false

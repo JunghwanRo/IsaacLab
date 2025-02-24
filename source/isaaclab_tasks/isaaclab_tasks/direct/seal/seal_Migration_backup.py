@@ -10,7 +10,7 @@ import math
 
 from .seal_core import SealEnv, SealEnvCfg
 
-from omni.isaac.lab.utils.math import subtract_frame_transforms, quat_from_matrix, normalize, quat_from_euler_xyz
+from isaaclab.utils.math import subtract_frame_transforms, quat_from_matrix, normalize, quat_from_euler_xyz
 
 
 @torch.jit.script
@@ -172,7 +172,7 @@ class SealMigrationEnv(SealEnv):
         self._prev_distance[env_ids] = torch.zeros(len(env_ids), device=self.device)
 
         # Sample new target positions
-        self._desired_pos_w[env_ids, 0] = torch.zeros_like(self._desired_pos_w[env_ids, 0]).uniform_(49.5, 50.5)
+        self._desired_pos_w[env_ids, 0] = torch.zeros_like(self._desired_pos_w[env_ids, 0]).uniform_(99.5, 100.5)
         self._desired_pos_w[env_ids, 1] = torch.zeros_like(self._desired_pos_w[env_ids, 1]).uniform_(-0.5, 0.5)
         self._desired_pos_w[env_ids, :2] += self._terrain.env_origins[env_ids, :2]
         self._desired_pos_w[env_ids, 2] = torch.zeros_like(self._desired_pos_w[env_ids, 2]).uniform_(-3.0, 3.0)
@@ -180,7 +180,7 @@ class SealMigrationEnv(SealEnv):
         default_root_state = self._robot.data.default_root_state[env_ids]
         # Randomize the robot's initial position
         random_offsets = torch.zeros_like(self._terrain.env_origins[env_ids])
-        random_offsets[:, 0] = torch.FloatTensor(len(env_ids)).uniform_(-50.5, -49.5)  # Randomize x position
+        random_offsets[:, 0] = torch.FloatTensor(len(env_ids)).uniform_(-100.5, -99.5)  # Randomize x position
         random_offsets[:, 1] = torch.FloatTensor(len(env_ids)).uniform_(-0.5, 0.5)  # Randomize y position
         random_offsets[:, 2] = torch.FloatTensor(len(env_ids)).uniform_(-5.0, 0.0)  # Randomize z position
         default_root_state[:, :3] += self._terrain.env_origins[env_ids] + random_offsets

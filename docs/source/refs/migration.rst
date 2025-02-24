@@ -97,17 +97,17 @@ Renaming of Isaac Lab Extensions and Folders
 --------------------------------------------
 
 Corresponding to Isaac Sim 4.5 changes, we have also made some updates to the Isaac Lab directories and extensions.
-All extensions that were previously under ``source/extensions`` are now under the ``source/`` directory directly.
-The ``source/apps`` and ``source/standalone`` folders have been moved to the root directory and are now called
+All extensions that were previously under ``source`` are now under the ``source/`` directory directly.
+The ``apps`` and ``scripts`` folders have been moved to the root directory and are now called
 ``apps/`` and ``scripts/``.
 
 Isaac Lab extensions have been renamed to:
 
-* ``omni.isaac.lab`` --> ``isaaclab``
-* ``omni.isaac.lab_assets`` --> ``isaaclab_assets``
-* ``omni.isaac.lab_tasks`` --> ``isaaclab_tasks``
+* ``isaaclab`` --> ``isaaclab``
+* ``isaaclab_assets`` --> ``isaaclab_assets``
+* ``isaaclab_tasks`` --> ``isaaclab_tasks``
 
-In addition, we have split up the previous ``source/standalone/workflows`` directory into ``scripts/imitation_learning``
+In addition, we have split up the previous ``scripts/workflows`` directory into ``scripts/imitation_learning``
 and ``scripts/reinforcement_learning`` directories. The RSL RL, Stable-Baselines, RL_Games, SKRL, and Ray directories
 are under ``scripts/reinforcement_learning``, while Robomimic and the new Isaac Lab Mimic directories are under
 ``scripts/imitation_learning``.
@@ -130,7 +130,7 @@ who prefer to use the previous scripts, they will be available in previous relea
 
 Additionally, we have also restructured the ``isaaclab_assets`` extension to be split into ``robots`` and ``sensors``
 subdirectories. This allows for clearer separation between the pre-defined configurations provided in the extension.
-For any existing imports such as ``from omni.isaac.lab_assets.anymal import ANYMAL_C_CFG``, please replace it with
+For any existing imports such as ``from isaaclab_assets.anymal import ANYMAL_C_CFG``, please replace it with
 ``from isaaclab.robots.anymal import ANYMAL_C_CFG``.
 
 

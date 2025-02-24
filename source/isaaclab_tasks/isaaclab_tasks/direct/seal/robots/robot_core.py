@@ -6,7 +6,7 @@
 import torch
 from dataclasses import MISSING
 
-from omni.isaac.lab.assets import Articulation
+from isaaclab.assets import Articulation
 
 
 class RobotCore:

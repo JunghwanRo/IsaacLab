@@ -14,36 +14,36 @@ import yaml
 import pathlib
 import csv
 from datetime import datetime
-from omni.isaac.lab.utils.noise import GaussianNoiseCfg, NoiseModelWithAdditiveBiasCfg
+from isaaclab.utils.noise import GaussianNoiseCfg, NoiseModelWithAdditiveBiasCfg
 
-import omni.isaac.lab.envs.mdp as mdp
-import omni.isaac.lab.sim as sim_utils
-from omni.isaac.lab.assets import Articulation, ArticulationCfg
-from omni.isaac.lab.envs import DirectRLEnv, DirectRLEnvCfg
-from omni.isaac.lab.envs.ui import BaseEnvWindow
-from omni.isaac.lab.sensors import ContactSensor, RayCaster
-from omni.isaac.lab.managers import EventTermCfg as EventTerm
-from omni.isaac.lab.managers import SceneEntityCfg
-from omni.isaac.lab.scene import InteractiveSceneCfg
-from omni.isaac.lab.sensors import ContactSensorCfg, RayCasterCfg, patterns
-from omni.isaac.lab.sim import SimulationCfg, SimulationContext
-from omni.isaac.lab.terrains import TerrainImporterCfg
+import isaaclab.envs.mdp as mdp
+import isaaclab.sim as sim_utils
+from isaaclab.assets import Articulation, ArticulationCfg
+from isaaclab.envs import DirectRLEnv, DirectRLEnvCfg
+from isaaclab.envs.ui import BaseEnvWindow
+from isaaclab.sensors import ContactSensor, RayCaster
+from isaaclab.managers import EventTermCfg as EventTerm
+from isaaclab.managers import SceneEntityCfg
+from isaaclab.scene import InteractiveSceneCfg
+from isaaclab.sensors import ContactSensorCfg, RayCasterCfg, patterns
+from isaaclab.sim import SimulationCfg, SimulationContext
+from isaaclab.terrains import TerrainImporterCfg
 
-from omni.isaac.lab.utils import configclass
-from omni.isaac.lab.utils.math import subtract_frame_transforms
-from omni.isaac.lab.markers import VisualizationMarkers, VisualizationMarkersCfg
-from omni.isaac.lab_tasks.direct.seal.dynamics.rotordynamics import create_rotor
-from omni.isaac.lab_tasks.direct.seal.dynamics.jointdynamics import create_joint
-from omni.isaac.lab.markers import CUBOID_MARKER_CFG, CYLINDER_MINUS_MARKER_CFG
-from omni.isaac.lab.utils.assets import ISAAC_NUCLEUS_DIR
+from isaaclab.utils import configclass
+from isaaclab.utils.math import subtract_frame_transforms
+from isaaclab.markers import VisualizationMarkers, VisualizationMarkersCfg
+from isaaclab_tasks.direct.seal.dynamics.rotordynamics import create_rotor
+from isaaclab_tasks.direct.seal.dynamics.jointdynamics import create_joint
+from isaaclab.markers import CUBOID_MARKER_CFG, CYLINDER_MINUS_MARKER_CFG
+from isaaclab.utils.assets import ISAAC_NUCLEUS_DIR
 
-from omni.isaac.lab_tasks.direct.seal.robots.squidbot import SquidbotRobot
-from omni.isaac.lab_tasks.direct.seal.robots_cfg.squidbot_cfg import SquidbotRobotCfg
+from isaaclab_tasks.direct.seal.robots.squidbot import SquidbotRobot
+from isaaclab_tasks.direct.seal.robots_cfg.squidbot_cfg import SquidbotRobotCfg
 
 ##
 # Pre-defined configs
 ##
-from omni.isaac.lab_assets.seal import SEAL_CFG  # isort: skip
+from isaaclab_assets.robots.seal import SEAL_CFG  # isort: skip
 
 
 # Determine the IsaacLab directory
@@ -57,25 +57,6 @@ def read_config(yaml_path: str) -> dict:
     if not isinstance(config, dict):
         raise ValueError(f"Expected configuration to be a dictionary, but got {type(config).__name__}")
     return config
-
-
-class RobotState:
-    """States for the robot"""
-
-    IDLE = wp.constant(0)
-    JETTING = wp.constant(1)
-    CHARGING = wp.constant(2)
-
-
-class TankState:
-    """States for the water tank."""
-
-    """Currently not used in the code."""
-
-    EMPTY = wp.constant(0)
-    CHARGING = wp.constant(1)
-    FULL = wp.constant(2)
-    JETTING = wp.constant(3)
 
 
 class SealEnvWindow(BaseEnvWindow):
@@ -111,7 +92,7 @@ class SealEnvCfg(DirectRLEnvCfg):
     # parameters from yaml
     ####################################################################################################
     # Read the configuration
-    config_path = os.path.join(ISAACLAB_DIR, "source/extensions/omni.isaac.lab_tasks/omni/isaac/lab_tasks/direct/seal/seal_cfg.yaml")
+    config_path = os.path.join(ISAACLAB_DIR, "source/isaaclab_tasks/isaaclab_tasks/direct/seal/seal_cfg.yaml")
     config = read_config(config_path)
 
     robot_cfg: SquidbotRobotCfg = SquidbotRobotCfg()
@@ -175,7 +156,7 @@ class SealEnvCfg(DirectRLEnvCfg):
         dtype=np.float32,
     )
     # -----------------------------
-    observation_space_robot = 9 + len(joints_pos_required) + len(joints_vel_required) + 5  # TODO: change hardcoded observation space numbers
+    observation_space_robot = 9 + len(joints_pos_required) + len(joints_vel_required) + 4  # TODO: change hardcoded observation space numbers
     observation_space_task: int = 3  # default 3, will be updated in the env
     observation_space = observation_space_robot + observation_space_task
     state_space = 0
@@ -205,7 +186,7 @@ class SealEnvCfg(DirectRLEnvCfg):
     )
 
     # scene
-    scene: InteractiveSceneCfg = InteractiveSceneCfg(num_envs=4096, env_spacing=1.0, replicate_physics=True)
+    scene: InteractiveSceneCfg = InteractiveSceneCfg(num_envs=4096, env_spacing=2.0, replicate_physics=True)
 
     # events
     events: EventCfg = EventCfg()
@@ -254,16 +235,6 @@ class SealEnv(DirectRLEnv):
         print(f"Found bodies: {self._robot.find_bodies('.*')}")
         # Goal position
         self._desired_pos_w = torch.zeros(self.num_envs, 3, device=self.device)
-
-        # water tank and robot state
-        self._water_tank_level = torch.zeros(self.num_envs, device=self.device)  # starts at 0
-        self._robot_state = torch.zeros(self.num_envs, dtype=torch.long, device=self.device)  # 0=IDLE by default
-        # Tweak these as desired:
-        self._max_tank = 100.0  # Full tank
-        self._min_jet_amount = 100.0
-        self._charge_rate = 100.0  # per timestep
-        self._jet_depletion_rate = 100.0  # per timestep
-        self._water_surface_z = 0.0  # water surface at z=0
 
         if self.cfg.save_csv and self.num_envs <= 1:
             print("Saving data to CSV")
@@ -380,104 +351,46 @@ class SealEnv(DirectRLEnv):
         light_cfg.func("/World/Light", light_cfg)
 
     def _pre_physics_step(self, actions: torch.Tensor):
-        """Process the raw policy actions, enforce tank constraints, apply thrust & joints."""
-        # ---------------------------------------------------------------
-        # 1) Extract discrete vs. continuous from the raw action
-        # ---------------------------------------------------------------
-        discrete_logits = actions[:, :3].to(self.device)
+        # print(f"actions: {actions}")
+        discrete_cmd_one_hot = actions[:, :3].to(self.device)  # 0: NOTHING, 1: JETTING, 2: CHARGING
         continuous_cmd = actions[:, 3:].to(self.device)
 
-        # The candidate discrete command is argmax of the first 3
-        candidate_cmd = discrete_logits.argmax(dim=1).long()
+        # Store them
+        # convert discrete_cmd one hot coding into normal integer
+        self._discrete_cmd[:] = discrete_cmd_one_hot.argmax(dim=1).long()
+        # print(f"discrete_cmd: {self._discrete_cmd}")
+        # print(f"dimension of actions: {actions.shape}")
+        # print(f"dimension of self._continuous_cmd: {self._continuous_cmd.shape}")
+        # print(f"dimension of continuous_cmd: {continuous_cmd.shape}")
         self._continuous_cmd[:] = continuous_cmd.clamp(-1.0, 1.0)
+        # print(f"self._actions: {self._actions}")
+        # self._thrust[:, 0, 2] = self.cfg.thrust_to_weight * self._robot_weight * (self._actions[:, 0] + 1.0) / 2.0
+        # self._moment[:, 0, :] = self.cfg.moment_scale * self._actions[:, 1:]
+        # apply the thrust forces to thrusters
 
-        # ---------------------------------------------------------------
-        # 2) Vectorized "state machine" for JET / CHARGE constraints
-        # ---------------------------------------------------------------
-        dt = self.cfg.sim.dt * self.cfg.sim.render_interval
+        # debug: all action -1. Carefully think what action -1, 0, 1 means.
+        # self._actions = torch.zeros_like(self._actions).uniform_(-1.0, -1.0)
+        self._full_actions = torch.ones_like(self._discrete_cmd[:]).float()
+        # print(f"floated discrete_cmd: {self._discrete_cmd[:].float()}")
 
-        # Identify which envs are underwater
-        root_z = self._robot.data.root_pos_w[:, 2]
-        underwater_mask = root_z < self._water_surface_z
-
-        # Are we IDLE vs. JETTING vs. CHARGING right now?
-        curr_state = self._robot_state
-        next_state = curr_state.clone()
-
-        is_idle = curr_state == int(RobotState.IDLE)
-        is_jetting = curr_state == int(RobotState.JETTING)
-        is_charging = curr_state == int(RobotState.CHARGING)
-
-        # candidate_cmd meaning: 0 => do nothing, 1 => jet, 2 => charge
-        want_jet = candidate_cmd == 1
-        want_charge = candidate_cmd == 2
-
-        # Start JET if IDLE + want_jet + underwater + tank > min
-        can_start_jet = is_idle & want_jet & underwater_mask & (self._water_tank_level >= self._min_jet_amount)
-        next_state = torch.where(can_start_jet, torch.tensor(int(RobotState.JETTING), device=self.device), next_state)
-
-        # Start CHARGE if IDLE + want_charge + underwater + tank not full
-        can_start_charge = is_idle & want_charge & underwater_mask & (self._water_tank_level < self._max_tank)
-        next_state = torch.where(can_start_charge, torch.tensor(int(RobotState.CHARGING), device=self.device), next_state)
-
-        # Remain in JETTING if currently JETTING and tank not empty
-        # If empty => revert to IDLE
-        empty_tank = self._water_tank_level <= 0.0
-        stop_jet = is_jetting & empty_tank
-        # If empty => go IDLE
-        next_state = torch.where(stop_jet, torch.tensor(int(RobotState.IDLE), device=self.device), next_state)
-
-        # Remain in CHARGING if currently CHARGING, tank not full, and still underwater
-        # If tank full or left water => go IDLE
-        full_tank = self._water_tank_level >= self._max_tank
-        stop_charge = is_charging & (full_tank | (~underwater_mask))
-        next_state = torch.where(stop_charge, torch.tensor(int(RobotState.IDLE), device=self.device), next_state)
-
-        # Write next state
-        self._robot_state = next_state
-
-        # Derive the "actual" discrete command from final state
-        new_discrete_cmd = torch.zeros_like(self._discrete_cmd)
-        new_discrete_cmd = torch.where(next_state == int(RobotState.JETTING), torch.tensor(1, device=self.device), new_discrete_cmd)
-        new_discrete_cmd = torch.where(next_state == int(RobotState.CHARGING), torch.tensor(2, device=self.device), new_discrete_cmd)
-
-        self._discrete_cmd[:] = new_discrete_cmd
-
-        # ---------------------------------------------------------------
-        # 3) Update water tank level
-        # ---------------------------------------------------------------
-        is_charging = self._robot_state == int(RobotState.CHARGING)
-        is_jetting = self._robot_state == int(RobotState.JETTING)
-
-        # Charging => add
-        self._water_tank_level = torch.where(is_charging, self._water_tank_level + (self._charge_rate * dt), self._water_tank_level)
-        # Jetting => subtract
-        self._water_tank_level = torch.where(is_jetting, self._water_tank_level - (self._jet_depletion_rate * dt), self._water_tank_level)
-        # Clamp
-        self._water_tank_level.clamp_(0.0, self._max_tank)
-
-        # ---------------------------------------------------------------
-        # 4) Use the final discrete command to apply thrust, etc.
-        # ---------------------------------------------------------------
-        # For demonstration, we feed self._full_actions=1.0 to rotor, but only apply
-        # if _discrete_cmd == 1 => JET. You can refine to scale thrust or similar.
-        self._full_actions = torch.ones_like(self._discrete_cmd, dtype=torch.float, device=self.device)
-
-        # Clear thrust / torque
-        self._thrusts[:] = 0.0
-        self._moments[:] = 0.0
-
-        # For each rotor, compute thrust
         for idx, rotor in enumerate(self.rotors):
-            thr, mom = rotor.get_thrust_and_torque(self._full_actions)
-            self._thrusts[:, self.rotor_body_ids[idx], 2] = thr
-            self._moments[:, self.rotorhub_body_ids[idx], 2] = mom
-
-        # Now zero out thrust if not in "JET" (discrete_cmd == 1)
-        jet_mask = self._discrete_cmd == 1
-        jet_mask_3d = jet_mask.view(-1, 1, 1).expand(-1, self._thrusts.shape[1], 3)
-        self._thrusts = torch.where(jet_mask_3d, self._thrusts, torch.zeros_like(self._thrusts))
-        self._moments = torch.where(jet_mask_3d, self._moments, torch.zeros_like(self._moments))
+            self._thrusts[:, self.rotor_body_ids[idx], 2], self._moments[:, self.rotorhub_body_ids[idx], 2] = rotor.get_thrust_and_torque(
+                self._full_actions[:]
+            )
+            # Keep thrusts only where self._discrete_cmd is 1
+            self._thrusts[:, self.rotor_body_ids[idx], 2] = torch.where(
+                self._discrete_cmd == 1,
+                self._thrusts[:, self.rotor_body_ids[idx], 2],
+                torch.zeros_like(self._thrusts[:, self.rotor_body_ids[idx], 2]),
+            )
+            if self.cfg.save_csv and self.num_envs <= 1:
+                self.thrust_log[:, idx] = self._thrusts[:, self.rotor_body_ids[idx], 2]
+        mask = self._discrete_cmd == 1
+        # Expand mask to match (num_envs, num_bodies, 3) so broadcasting works properly
+        mask_3d = mask.view(-1, 1, 1).expand(-1, self._thrusts.shape[1], self._thrusts.shape[2])
+        self._thrusts = torch.where(mask_3d, self._thrusts, torch.zeros_like(self._thrusts))
+        self._moments = torch.where(mask_3d, self._moments, torch.zeros_like(self._moments))
+        num_rotors = len(self.cfg.rotors)
         # Make thrust to 0.0 if the rotor’s world z-position is above 0.0
         # But note that actually the thrust works in the air as well.
         """
@@ -540,7 +453,6 @@ class SealEnv(DirectRLEnv):
         joint_vel_indices = [self._robot.find_joints(name)[0][0] for name in self.cfg.joints_vel_required]
         joint_pos_obs = self._robot.data.joint_pos[:, joint_pos_indices]
         joint_vel_obs = self._robot.data.joint_vel[:, joint_vel_indices]
-        tank_level_obs = self._water_tank_level.unsqueeze(-1)  # shape (num_envs, 1)
 
         obs = torch.cat(
             [
@@ -552,7 +464,6 @@ class SealEnv(DirectRLEnv):
                 desired_pos_b,
                 self._prev_discrete_cmd,
                 self._prev_continuous_cmd,
-                tank_level_obs,
             ],
             dim=-1,
         )
@@ -621,9 +532,6 @@ class SealEnv(DirectRLEnv):
         self._robot.write_root_link_pose_to_sim(default_root_state[:, :7], env_ids)
         self._robot.write_root_com_velocity_to_sim(default_root_state[:, 7:], env_ids)
         self._robot.write_joint_state_to_sim(joint_pos, joint_vel, None, env_ids)
-        self._water_tank_level[env_ids] = 0.0
-        self._robot_state[env_ids] = int(RobotState.IDLE)
-
         # Logging
         final_distance_to_goal = torch.linalg.norm(self._desired_pos_w[env_ids] - self._robot.data.root_pos_w[env_ids], dim=1).mean()
         extras = dict()
@@ -644,7 +552,7 @@ class SealEnv(DirectRLEnv):
         if debug_vis:
             if not hasattr(self, "goal_pos_visualizer"):
                 marker_cfg = CUBOID_MARKER_CFG.copy()
-                marker_cfg.markers["cuboid"].size = (0.2, 0.2, 0.2)
+                marker_cfg.markers["cuboid"].size = (0.3, 0.3, 0.3)
                 marker_cfg.markers["cuboid"].visual_material = sim_utils.MdlFileCfg(
                     mdl_path="{NVIDIA_NUCLEUS_DIR}/Materials/Base/Glass/Red_Glass.mdl",
                 )
@@ -670,7 +578,7 @@ class SealEnv(DirectRLEnv):
         thrust_quat = self._robot.data.body_link_quat_w[:, self.rotor_body_ids[0], :]
         # scales: Scale applied before any rotation is applied. Shape is (M, 3).
         thrust_scale = torch.ones_like(self._thrusts[:, self.rotor_body_ids[0], :]) * 0.03
-        thrust_scale[:, 2] = self._thrusts[:, self.rotor_body_ids[0], 2] * 0.03
+        thrust_scale[:, 2] = self._thrusts[:, self.rotor_body_ids[0], 2] * 0.01
         self.thrust_visualizer.visualize(thrust_pos_w, thrust_quat, thrust_scale)
 
     def _log_csv(self):
@@ -732,3 +640,12 @@ class SealEnv(DirectRLEnv):
 
 
 wp.init()
+
+
+class TankState:
+    """States for the water tank."""
+
+    EMPTY = wp.constant(0)
+    CHARGING = wp.constant(1)
+    FULL = wp.constant(2)
+    JETTING = wp.constant(3)
