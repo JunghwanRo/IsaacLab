@@ -25,6 +25,9 @@ class SquidbotRobotCfg(RobotCoreCfg):
 
     root_id_name = "base_link"
 
+    water_tank_mass = 0.3  # Kg
+    water_tank_b_name = "buoyancy_00"
+
     # Buoyancy
     buoyancy_cfg: BuoyancyCfg = BuoyancyCfg()
     buoyancy_cfg.mass = 0.5730299949645996  # Kg

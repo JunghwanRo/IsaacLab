@@ -1,0 +1,239 @@
+{
+    "version": "1.0",
+    "file_records": [
+        {
+            "source_url": "/home/julia/isaacsim/extscache/omni.kit.stage_templates-1.2.6+d02c707b/data/CarLight_512x256.hdr",
+            "source_hash": "06962bb8da4ca4d9ded8ad9daa8ec8a2305cc1eb",
+            "target_url": "./isaacsim/extscache/omni.kit.stage_templates-1.2.6+d02c707b/data/CarLight_512x256.hdr",
+            "target_hash": "c0cfdeca378d6dff13cd5db5d658229fc3dd42e3"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Automotive/Metal/Metal_Green.mdl",
+            "source_hash": "2d418991dcc00b2626c689dab27029fe552d5e7c",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Automotive/Metal/Metal_Green.mdl",
+            "target_hash": "fed918d7842eb706cb7138de9d3d47ddc6f6a05e"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Paint/Carpaint/Carpaint_Solid.mdl",
+            "source_hash": "e28300278c6afda50e97cc85c732b117210266b4",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Paint/Carpaint/Carpaint_Solid.mdl",
+            "target_hash": "d0ea9bdbe38830cd3ff0997cba930a4a5603b002"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Masonry/Facade_Brick_Red_Clinker.mdl",
+            "source_hash": "0e6a6cdc9d65090ce17d23a285cc408431b70506",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Masonry/Facade_Brick_Red_Clinker.mdl",
+            "target_hash": "bba37c34047a3284107e538b1504bab073496a5a"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Liquids/Water_Blue_Ocean_Perlinwaves.mdl",
+            "source_hash": "b94226e7d0f957db046b3692f9b90554cd1242f4",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Liquids/Water_Blue_Ocean_Perlinwaves.mdl",
+            "target_hash": "c9ed8237a4571f0f9970aba8601e102333787bf2"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Fabric/Cashmere_Wool_Suiting.mdl",
+            "source_hash": "21f2482e0347897184ba681ef10bed93639b1892",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Fabric/Cashmere_Wool_Suiting.mdl",
+            "target_hash": "da0b2dd38611c264d03020b76057c8a3deb2c6d7"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Fabric/Polyester_Charmeuse.mdl",
+            "source_hash": "dda1fc8e90f84ebb85a9e8eb77ad68b1583aba1b",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Fabric/Polyester_Charmeuse.mdl",
+            "target_hash": "82a650050f1627ef79e734ef0d74f8d8e42c5485"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Natural/Sand.mdl",
+            "source_hash": "d039087a532cd2c8d80b7ce5ada1fee53cad2490",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Natural/Sand.mdl",
+            "target_hash": "b0fb57e97c78e41e1c4f46dabec82c36e2b28b98"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Natural/Water.mdl",
+            "source_hash": "adc99309246de8c72c7b35233a9db4091e602724",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Natural/Water.mdl",
+            "target_hash": "c4317f4747379b3de7d07e752de3090067d4a7d4"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Metals/Aluminum_Cast.mdl",
+            "source_hash": "0ac207f02a6647880bb8607e49601792cf9bed08",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Metals/Aluminum_Cast.mdl",
+            "target_hash": "5a85afb6a1d4f0fe0181246f56a9dbb424c4d35b"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Natural/Sand/Sand_BaseColor.png",
+            "source_hash": "474ca01208725ac34d8cbdf4d78c44e38df673ce",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Natural/Sand/Sand_BaseColor.png",
+            "target_hash": "594a2d735a8fae835de5c4aefbe99c5c15628384"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Metals/Aluminum_Cast/Aluminum_Cast_BaseColor.png",
+            "source_hash": "05499775b11cfac7278fe8acd474c84d73003fff",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Metals/Aluminum_Cast/Aluminum_Cast_BaseColor.png",
+            "target_hash": "bb087792ea09f9a6e25fe5e6a72eb7cb08ff4a77"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Natural/Sand/Sand_ORM.png",
+            "source_hash": "1ef4e2e52cb9a3e459824686bc9e7a58ef612227",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Natural/Sand/Sand_ORM.png",
+            "target_hash": "45e3bf381bdb6a86c1623b8572b7f9124eb83c61"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Metals/Aluminum_Cast/Aluminum_Cast_ORM.png",
+            "source_hash": "cefe1ac723ab2a04559421d35f8a8ec06d695bdd",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Metals/Aluminum_Cast/Aluminum_Cast_ORM.png",
+            "target_hash": "5bb9b7fa5f57f4c67a827ebbedfb0fc24e5403c4"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Natural/Water/Water_Normal.png",
+            "source_hash": "7810f90a23da84b6b39879c2336a4ccc4cb7e435",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Natural/Water/Water_Normal.png",
+            "target_hash": "ee1d5fd90253f6c4d2edfabbbe6d45a6b42c45f4"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Natural/Sand/Sand_Normal.png",
+            "source_hash": "f6134a84b980e910cdfd3f5a84f78beb1ffbb1b9",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Natural/Sand/Sand_Normal.png",
+            "target_hash": "1e113377974f4959ccf0e9850433818f3ed11054"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Metals/Aluminum_Cast/Aluminum_Cast_N.png",
+            "source_hash": "7bb95369d43012948c251f01ea428a3182db17d2",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Metals/Aluminum_Cast/Aluminum_Cast_N.png",
+            "target_hash": "409db846aeb27dcf1f528d11890ec6fca88b4679"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Automotive/Surfacing/ov_metal_a_01/ov_metal_a_01_basecolor.png",
+            "source_hash": "5fe40c9321cf1d980cc81aa2533f30d919219492",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Automotive/Surfacing/ov_metal_a_01/ov_metal_a_01_basecolor.png",
+            "target_hash": "88182298badb901d1c7720ada092c37543cacf94"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Templates/GlassWithVolume.mdl",
+            "source_hash": "fed4132a19e9a12998669aa3dedbec6a941cd407",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Templates/GlassWithVolume.mdl",
+            "target_hash": "5c5dcb6c295b107a3b062e861048ea3c7c046813"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Automotive/Surfacing/ov_metal_a_01/ov_metal_a_01_orm.png",
+            "source_hash": "de2edb4aa5220844a5b7c9fa783fa2793eb7e897",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Automotive/Surfacing/ov_metal_a_01/ov_metal_a_01_orm.png",
+            "target_hash": "283702eff31ed2e54a99d8000ede98da3b2281de"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Automotive/Surfacing/ov_metal_a_01/ov_metal_a_01_normal.png",
+            "source_hash": "767da5a8363eecc46d7b352c19a0d73795d57c05",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Automotive/Surfacing/ov_metal_a_01/ov_metal_a_01_normal.png",
+            "target_hash": "d93af23f8ad5197027a961d1f18aae1d00168b6b"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Masonry/textures/clinker_multi_R_rough_G_ao_B_height.jpg",
+            "source_hash": "0ee6829479e397d49f5d74e3b0fbe43dd066d232",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Masonry/textures/clinker_multi_R_rough_G_ao_B_height.jpg",
+            "target_hash": "4a98235c117168ae7c834e74fe1a8fcf00869ce6"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Automotive/Templates/OmniUber_Automotive.mdl",
+            "source_hash": "f25bfdd451655b86141cc0aee41cc93dd502e970",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Automotive/Templates/OmniUber_Automotive.mdl",
+            "target_hash": "84724f1010a18d6bb03a136696b159aa4107d620"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Templates/GlassUtils.mdl",
+            "source_hash": "7d37a489c1b54bc0562bed3a0c3a4cf7193bf1b9",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/Base/Templates/GlassUtils.mdl",
+            "target_hash": "a6a061af8c88dcee0d2eaa8ae824f6aad2e51b5e"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Masonry/textures/painted_wall_rough.jpg",
+            "source_hash": "1926705102c1a55f18c3fa73bab85a28ff0a1b35",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Masonry/textures/painted_wall_rough.jpg",
+            "target_hash": "d1227b30e42c01ff20e7f2813a4338e4120ba660"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Masonry/textures/clinker_rough.jpg",
+            "source_hash": "2023811faa005dc982119c27acc4071a23fcf1e3",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Masonry/textures/clinker_rough.jpg",
+            "target_hash": "98de202538e0f353e4e55c18aa3db4b5ef8db4fe"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Masonry/textures/clinker_mask_multi_R_rnd_color_G_grout_B_leaks.jpg",
+            "source_hash": "3db5c5e3bfd6ab990a6345dd72054a9e8b0c26de",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Masonry/textures/clinker_mask_multi_R_rnd_color_G_grout_B_leaks.jpg",
+            "target_hash": "3e63318edd5f7a02967b4ddc41acf18b9136a0b7"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Masonry/textures/clinker_diff.jpg",
+            "source_hash": "65506735fffce2b0136be4696661f0e13692e20d",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Masonry/textures/clinker_diff.jpg",
+            "target_hash": "f1d2cd5192a1020e8d4d8d062c9bb1e312d00dbe"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Masonry/textures/clinker_paint_stroke_bump.jpg",
+            "source_hash": "fb65e0923579550bd1f64981b42c298be5189c77",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Masonry/textures/clinker_paint_stroke_bump.jpg",
+            "target_hash": "26dab71801d3eab88f79ce5f2d6b93e09174b36f"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Masonry/textures/clinker_norm.jpg",
+            "source_hash": "ed118b36a45de4967ffd0de4691bbaaa02273ec2",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Masonry/textures/clinker_norm.jpg",
+            "target_hash": "8d639c147cd1946de1214861f497302f51935466"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Paint/Carpaint/textures/smudges_scratches_A_rough.jpg",
+            "source_hash": "61ce01ca5a5be8ec5ed5e089baff99c93fec2960",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Paint/Carpaint/textures/smudges_scratches_A_rough.jpg",
+            "target_hash": "07cf01aa55d6a0f3699cbf0e94a36899a8c9299a"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Fabric/textures/charmeuse_weaving_02_norm.png",
+            "source_hash": "ee9a7d6ecd6eb0f81ed34c4446dff3edf0acdb72",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Fabric/textures/charmeuse_weaving_02_norm.png",
+            "target_hash": "471f75a39cbbc1fc624bc8711e22e45adec0a7e1"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Fabric/textures/charmeuse_weaving_02_R_id_G_offs.png",
+            "source_hash": "5103229b1ca054e827fb4d9eafad8d354a05b151",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Fabric/textures/charmeuse_weaving_02_R_id_G_offs.png",
+            "target_hash": "a540a2e58f94b88a9e80c87fbc2d6f1ef3f53839"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Fabric/textures/fabric_noise_multi_R_noise1_G_noise_2.png",
+            "source_hash": "f514784e7d2bd8a100cf7b1bf4728f947728f996",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Fabric/textures/fabric_noise_multi_R_noise1_G_noise_2.png",
+            "target_hash": "7eb391ee2f2d76045b17654e8efeae39f7b0e5bb"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Fabric/textures/cashmere_wool_suiting_R_diff.jpg",
+            "source_hash": "7b5d35136adf610b39d55e5d78434b7244d57b98",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Fabric/textures/cashmere_wool_suiting_R_diff.jpg",
+            "target_hash": "2cb7a829100f5e8f9be7a0a2b20dc5353809235e"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Fabric/textures/french_terry_fabric_warp.png",
+            "source_hash": "72a64af7514ed918de470bfa6bcd60e60274128f",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Fabric/textures/french_terry_fabric_warp.png",
+            "target_hash": "f93d2ea95ea82938270a09b55fa4a5e63cb622c2"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Fabric/textures/cashmere_wool_suiting_R_rough_G_ao_B_height.jpg",
+            "source_hash": "03797095cc37c79cca6101442326832a5b966a26",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Fabric/textures/cashmere_wool_suiting_R_rough_G_ao_B_height.jpg",
+            "target_hash": "0b1a6b0a98bbe8ecbb190ae5a4bfd6483397b4f8"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Fabric/textures/cashmere_wool_suiting_norm.jpg",
+            "source_hash": "1887170d177d52bd1d8be9c1357569529bf47043",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Fabric/textures/cashmere_wool_suiting_norm.jpg",
+            "target_hash": "eed3ab9d41d698da5ef6647b6c02631eb6ec85fe"
+        },
+        {
+            "source_url": "https://omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Fabric/textures/fibers.jpg",
+            "source_hash": "e5e214796cbbc3ba90c6ec3537b6065713b156d5",
+            "target_url": "./omniverse-content-production.s3.us-west-2.amazonaws.com/Materials/2023_1/vMaterials_2/Fabric/textures/fibers.jpg",
+            "target_hash": "d35c118cab2a7e4e113758af1d4697fd64fac7e8"
+        }
+    ]
+}
